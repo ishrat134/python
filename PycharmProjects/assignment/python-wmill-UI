@@ -1,0 +1,24 @@
+import httpx
+import json
+
+async def main(inputs_from_ui: dict, fastapi_url: str = "http://your-fastapi-server:8000"):
+    """Send UI inputs to FastAPI endpoint"""
+    
+    try:
+        # Convert string JSON to dict if needed
+        if isinstance(inputs_from_ui.get('additional_config'), str):
+            inputs_from_ui['additional_config'] = json.loads(inputs_from_ui['additional_config'])
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"{fastapi_url}/process",
+                json=inputs_from_ui,
+                timeout=30
+            )
+            response.raise_for_status()
+            return response.json()
+            
+    except json.JSONDecodeError as e:
+        return {"error": f"Invalid JSON config: {str(e)}"}
+    except httpx.HTTPError as e:
+        return {"error": f"API request failed: {str(e)}"}
