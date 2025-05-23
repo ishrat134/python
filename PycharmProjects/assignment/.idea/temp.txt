@@ -1,0 +1,40 @@
+1. Migration from Legacy Schedulers to Dagster Orchestration
+Identified and refactored legacy ETL scripts running on local machines via ad-hoc schedulers, which were prone to failures and lacked visibility.
+
+Re-engineered and containerized these workflows into Dagster jobs, enabling hourly/daily automated execution with built-in monitoring, logging, and dependency management.
+
+Reduced manual intervention by 90%, ensuring timely data availability for trading and analytics.
+
+2. Elimination of Data Redundancy & Storage Optimization
+Discovered multiple instances of duplicate datasets being pulled across different tables, leading to wasted storage and inconsistent updates.
+
+Consolidated redundant pipelines, deleting ~40% of unused or replicated tables, improving storage efficiency and reducing refresh costs.
+
+Implemented data lineage tracking to prevent future redundancy issues.
+
+3. Unified Data Model for Power Market Datasets (Flows, Prices, Demand, Generation)
+Recognized an inefficient wide-column table design where each ISO (NEISO, NYISO, PJM, IESO, etc.) had separate tables for the same dataset (e.g., NeisoDemand, PjmDemand).
+
+Redesigned the schema into a normalized, row-based structure, merging 18+ tables into just 4 master tables (e.g., EastPowerFlows for all ISOs).
+
+Created dynamic views (e.g., vNeisoFlows, vNysioDemand) to maintain backward compatibility while reducing maintenance overhead.
+
+Cut query complexity by 60% and improved aggregation performance for cross-ISO analytics.
+
+4. Metadata-Driven ETL Framework for Scalability
+Introduced a flexible, self-service metadata architecture where new data IDs (e.g., power flow nodes, price hubs) could be added without code changes.
+
+Designed metadata control tables (e.g., EastPowerFlowsMetadata) to define sources, IDs, and transformations, allowing quants to onboard new datasets via simple SQL inserts.
+
+Reduced dependency on engineering teams, enabling faster iterations (new data points could be added in minutes instead of days).
+
+Impact & Results
+50% reduction in pipeline failures due to robust error handling in Dagster.
+
+70% decrease in storage costs by eliminating redundancy and optimizing table structures.
+
+Faster decision-making for trading teams due to reliable, near-real-time data refreshes.
+
+Future-proofed architecture with metadata-driven design, reducing technical debt.
+
+This initiative not only enhanced data reliability but also empowered quants with self-service capabilities, setting a foundation for scalable analytics
