@@ -1,0 +1,1 @@
+args: ["ls -la /home/app_user/app/ && echo '---' && ls -la /home/app_user/app/integration_tests/ && echo '---' && find /home/app_user/app -name '*test*' -type f"]
